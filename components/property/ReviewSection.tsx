@@ -1,27 +1,27 @@
-import axios from "axios"; [14]
-import { useState, useEffect } from "react"; [14]
+import axios from "axios"; 
+import { useState, useEffect } from "react"; 
 
-const ReviewSection = ({ propertyId }) => { [14]
-    const [reviews, setReviews] = useState([]); [14]
-    const [loading, setLoading] = useState(true); [14]
+const ReviewSection = ({ propertyId }) => { 
+    const [reviews, setReviews] = useState([]); 
+    const [loading, setLoading] = useState(true); 
 
     useEffect(() => {
         const fetchReviews = async () => { [15]
             try {
                 // Fetch reviews based on propertyId
-                const response = await axios.get(`/api/properties/${propertyId}/reviews`); [15]
+                const response = await axios.get(`/api/properties/${propertyId}/reviews`); 
                 setReviews(response.data); [15]
             } catch (error) {
-                console.error("Error fetching reviews:", error); [15]
+                console.error("Error fetching reviews:", error); 
             } finally {
-                setLoading(false); [15]
+                setLoading(false); 
             }
         };
 
         fetchReviews();
-    }, [propertyId]); [15]
+    }, [propertyId]); 
 
-    if (loading) { [15]
+    if (loading) { 
         return <div>Loading reviews...</div>;
     }
 
@@ -29,7 +29,7 @@ const ReviewSection = ({ propertyId }) => { [14]
         <div>
             {/* Dynamically display fetched reviews */}
             {reviews.map((review) => (
-                <div key={review.id}>{review.comment}</div> // Assuming 'review' object has a 'comment' field
+                <div key={review.id}>{review.comment}</div> 
             ))}
         </div>
     );
