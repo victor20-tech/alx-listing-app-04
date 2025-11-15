@@ -1,21 +1,38 @@
-const ReviewSection: React.FC<{ reviews: any[] }> = ({ reviews }) => {
-  return (
-    <div className="mt-8">
-      <h3 className="text-2xl font-semibold">Reviews</h3>
-      {reviews.map((review, index) => (
-        <div key={index} className="border-b pb-4 mb-4">
-          <div className="flex items-center">
-            <img src={review.avatar} alt={review.name} className="w-12 h-12 rounded-full mr-4" />
-            <div>
-              <p className="font-bold">{review.name}</p>
-              <p className="text-yellow-500">{review.rating} stars</p>
-            </div>
-          </div>
-          <p>{review.comment}</p>
+import axios from "axios"; [14]
+import { useState, useEffect } from "react"; [14]
+
+const ReviewSection = ({ propertyId }) => { [14]
+    const [reviews, setReviews] = useState([]); [14]
+    const [loading, setLoading] = useState(true); [14]
+
+    useEffect(() => {
+        const fetchReviews = async () => { [15]
+            try {
+                // Fetch reviews based on propertyId
+                const response = await axios.get(`/api/properties/${propertyId}/reviews`); [15]
+                setReviews(response.data); [15]
+            } catch (error) {
+                console.error("Error fetching reviews:", error); [15]
+            } finally {
+                setLoading(false); [15]
+            }
+        };
+
+        fetchReviews();
+    }, [propertyId]); [15]
+
+    if (loading) { [15]
+        return <div>Loading reviews...</div>;
+    }
+
+    return (
+        <div>
+            {/* Dynamically display fetched reviews */}
+            {reviews.map((review) => (
+                <div key={review.id}>{review.comment}</div> // Assuming 'review' object has a 'comment' field
+            ))}
         </div>
-      ))}
-    </div>
-  );
+    );
 };
 
 export default ReviewSection;
