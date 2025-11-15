@@ -1,32 +1,39 @@
-import BookingForm from "@/components/booking/BookingForm"; 
-import OrderSummary from "@/components/booking/OrderSummary"; 
-import CancellationPolicy from "@/components/booking/CancellationPolicy"; 
+import axios from "axios"; 
+import { useState } from "react"; 
 
+export default function BookingForm() {
+    const [formData, setFormData] = useState({
+        /* initialization of booking fields... */
+    });
+    
+    const [loading, setLoading] = useState(false); 
+    const [error, setError] = useState(null); 
 
-export default function BookingPage() {
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        setLoading(true);
+        setError(null);
 
-    // Define booking details 
-    const bookingDetails = {
-        propertyName: "Villa Arrecife Beach House",
-        price: 7500,
-        bookingFee: 65,
-        totalNights: 3,
-        startDate: "24 August 2024",
-    }; 
+        try {
+            // Submit booking details via POST request
+            const response = await axios.post("/api/bookings", formData); 
+            alert("Booking confirmed!");
+        } catch (error) {
+            setError("Failed to submit booking.");
+        } finally {
+            setLoading(false);
+        }
+    };
 
     return (
-        <div className="booking-layout">
-            
-            
-            <section className="form-section">
-                <BookingForm />
-            </section>
-
-            <section className="summary-section">
-                <OrderSummary bookingDetails={bookingDetails} />
-                <CancellationPolicy /> 
-            </section>
-
-        </div>
+        <form onSubmit={handleSubmit}>
+            {/* Form fields for booking details */}
+            <button type="submit" disabled={loading}>
+                {loading ? "Processing..." : "Confirm & Pay"}
+            </button>
+            {error && (
+                <p style={{ color: 'red' }}>{error}</p> 
+            )}
+        </form>
     );
 }
