@@ -10,7 +10,7 @@ const ReviewSection = ({ propertyId }) => {
             try {
                 // Fetch reviews based on propertyId
                 const response = await axios.get(`/api/properties/${propertyId}/reviews`); 
-                setReviews(response.data); [15]
+                setReviews(response.data);
             } catch (error) {
                 console.error("Error fetching reviews:", error); 
             } finally {
